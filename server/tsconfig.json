@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": false,
+    "target": "es6",
+    "module": "commonjs",
+    "lib": ["ESNext"],
+    "allowJs": true,
+    "outDir": "dist",
+    "rootDir": ".",
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@server/*": ["./src/*"],
+      "@config": ["./config/index.ts"],
+      "@test/*": ["./test/*"],
+      "@core/*": ["./core/*"],
+      "@helpers/*": ["./src/helpers/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@services/*": ["./src/services/*"],
+      "@adapters": ["./src/adapters/index"],
+      "@adapters/*": ["./src/adapters/*"],
+      "@middlewares/*": ["./src/middlewares/*"]
+    },
+    "types": ["jest", "node"]
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
+}

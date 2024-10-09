@@ -1,0 +1,44 @@
+{
+  "name": "@demo/server",
+  "type": "commonjs",
+  "version": "0.1.0",
+  "main": "index.js",
+  "license": "UNLICENSED",
+  "scripts": {
+    "serve": "NODE_ENV=development npx nodemon",
+    "lint": "eslint . --ext .ts --fix",
+    "build": "rimraf ./dist && tsc -p tsconfig.prod.json && tsc-alias -p tsconfig.prod.json",
+    "test": "yarn run test:all",
+    "test:file": "NODE_ENV=test jest -i --runInBand --detectOpenHandles --verbose --silent",
+    "test:all": "NODE_ENV=test jest ./test --runInBand --detectOpenHandles --silent",
+    "test:all:debug": "NODE_ENV=test jest ./test --runInBand --detectOpenHandles --verbose"
+  },
+  "devDependencies": {
+    "@shopify/eslint-plugin": "^45.0.0",
+    "@shopify/prettier-config": "^1.1.2",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.1",
+    "@types/node": "^18.15.3",
+    "@types/supertest": "^6.0.2",
+    "@typescript-eslint/eslint-plugin": "^7.17.0",
+    "@typescript-eslint/parser": "^7.17.0",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.7.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "nodemon": "^3.1.4",
+    "prettier": "^3.3.3",
+    "rimraf": "^4.4.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.6",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "express": "^4.21.1",
+    "jest": "^29.5.0"
+  }
+}
