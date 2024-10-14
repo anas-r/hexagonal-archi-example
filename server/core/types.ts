@@ -12,8 +12,10 @@ export type GetAt<N extends number, T extends Array<[unknown, unknown]>, Acc ext
   ? Acc
   : T extends [infer U, ...infer Rest]
     ? U extends unknown[]
-      ? Rest extends Array<[unknown, unknown]>
-        ? GetAt<N, Rest, [...Acc, U[N]]>
+      ? U[N] extends () => infer X
+        ? Rest extends Array<[unknown, unknown]>
+          ? GetAt<N, Rest, [...Acc, X]>
+          : never
         : never
       : never
     : never;

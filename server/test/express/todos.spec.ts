@@ -4,7 +4,7 @@ import type { AppModule } from '@server/adapters/express';
 import type { Project } from '@server/entities/project';
 import type { Todo } from '@server/entities/todo';
 
-describe.skip('# todos', () => {
+describe('# todos', () => {
   let appModule: AppModule;
   let project: Project;
   let todo: Todo;
