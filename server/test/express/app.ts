@@ -11,6 +11,7 @@ import { PROJECT_REPO } from '@server/repositories/project';
 import { TODO_REPO } from '@server/repositories/todo';
 import { PROJECT_SRV, ProjectService } from '@server/services/project.service';
 import { TODO_SRV, TodoService } from '@server/services/todo.service';
+import { LOGGER, SilentLogger } from '@server/services/logger.service';
 import type { Project } from '@server/entities/project';
 
 export const createTestModule = () =>
@@ -24,7 +25,8 @@ export const createTestModule = () =>
       provide(TODO_EXP_ADAPT, TodoExpressAdapter),
       provide(PROJECT_EXP_ADAPT, ProjectExpressAdapter),
       provide(EXPRESS_CONFIG, new ValueProvider({ port: 6666, scheme: 'http', host: 'localhost' })),
-      provide(EXPRESS_APP, new ValueProvider(express()))
+      provide(EXPRESS_APP, new ValueProvider(express())),
+      provide(LOGGER, SilentLogger)
     )
   );
 

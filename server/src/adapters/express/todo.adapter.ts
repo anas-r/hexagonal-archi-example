@@ -3,25 +3,13 @@ import { Context } from '@core/context';
 import { Tag } from '@core/provider';
 import { TODO_SRV } from '@server/services/todo.service';
 import type { Application, Request, Response } from 'express';
-import type { Project } from '@server/entities/project';
 import type { Todo } from '@server/entities/todo';
 
-export const TODO_EXP_ADAPT = new Tag<ITodoExpressAdapter>('express/adapter/todo');
+export const TODO_EXP_ADAPT = new Tag<TodoExpressAdapter>('express/adapter/todo');
 
 export class TodoBadRequestError extends Error {}
 
-export interface ITodoExpressAdapter {
-  create(
-    req: Request<{}, {}, Pick<Todo, 'projectId' | 'description' | 'dueBy' | 'done'>>,
-    res: Response<Todo>
-  ): Promise<void>;
-  get(req: Request<{ id: string }>, res: Response<Todo>): Promise<void>;
-  update(req: Request<{ id: string }, {}, Pick<Todo, 'description' | 'dueBy'>>, res: Response<Todo>): Promise<void>;
-  check(req: Request<{ id: string }>, res: Response<Todo>): Promise<void>;
-  uncheck(req: Request<{ id: string }>, res: Response<Todo>): Promise<void>;
-}
-
-export class TodoExpressAdapter implements ITodoExpressAdapter {
+export class TodoExpressAdapter {
   private todoService = Context.get(TODO_SRV);
 
   async create(

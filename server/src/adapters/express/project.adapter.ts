@@ -7,25 +7,11 @@ import type { Application, Request, Response } from 'express';
 import type { Project } from '@server/entities/project';
 import type { Todo } from '@server/entities/todo';
 
-export const PROJECT_EXP_ADAPT = new Tag<IProjectExpressAdapter>('express/adapter/project');
+export const PROJECT_EXP_ADAPT = new Tag<ProjectExpressAdapter>('express/adapter/project');
 
 export class ProjectBadRequestError extends Error {}
 
-export interface IProjectExpressAdapter {
-  getAll(req: Request, res: Response<(Project & { todos: Todo[] })[]>): Promise<void>;
-  create(req: Request<{}, {}, Pick<Project, 'name'>>, res: Response<Project>): Promise<void>;
-  get(req: Request<{ id: string }>, res: Response<Project & { todos: Todo[] }>): Promise<void>;
-  update(req: Request<{ id: string }, {}, Pick<Project, 'name'>>, res: Response<Project>): Promise<void>;
-  archive(req: Request<{ id: string }>, res: Response<Project>): Promise<void>;
-  restore(req: Request<{ id: string }>, res: Response<Project>): Promise<void>;
-  createTodo(
-    req: Request<{ id: string }, {}, Pick<Todo, 'description' | 'done'> & { dueBy: string }>,
-    res: Response<Todo>
-  ): Promise<void>;
-  getTodos(req: Request<{ id: string }>, res: Response<Todo[]>): Promise<void>;
-}
-
-export class ProjectExpressAdapter implements IProjectExpressAdapter {
+export class ProjectExpressAdapter {
   private todoService = Context.get(TODO_SRV);
   private projectService = Context.get(PROJECT_SRV);
 

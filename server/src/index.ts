@@ -10,6 +10,7 @@ import { MockProjectRepository } from '@server/repositories/mock/project.reposit
 import { TODO_REPO } from '@server/repositories/todo';
 import { PROJECT_REPO } from '@server/repositories/project';
 import { MockTodoRepository } from '@server/repositories/mock/todo.repository';
+import { Logger, LOGGER } from '@services/logger.service';
 
 Context.provide(
   AppModule,
@@ -21,6 +22,7 @@ Context.provide(
     provide(TODO_EXP_ADAPT, TodoExpressAdapter),
     provide(PROJECT_EXP_ADAPT, ProjectExpressAdapter),
     provide(EXPRESS_CONFIG, new ValueProvider({ port: 2000, scheme: 'http', host: 'localhost' })),
-    provide(EXPRESS_APP, new ValueProvider(express()))
+    provide(EXPRESS_APP, new ValueProvider(express())),
+    provide(LOGGER, Logger.of('[live]'))
   )
 ).run();

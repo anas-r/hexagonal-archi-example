@@ -1,19 +1,11 @@
 import { Context } from '@core/context';
 import { Tag } from '@core/provider';
-import type { Todo } from '@server/entities/todo';
 import { TODO_REPO } from '@server/repositories/todo';
+import type { Todo } from '@server/entities/todo';
 
-export interface ITodoService {
-  get(id: string): Promise<Todo>;
-  getAll(projectId: string): Promise<Todo[]>;
-  create(projectId: string, data: Pick<Todo, 'description' | 'dueBy' | 'done'>): Promise<Todo>;
-  update(id: string, data: Pick<Todo, 'description' | 'dueBy'>): Promise<Todo>;
-  setDone(todoId: string, done: boolean): Promise<Todo>;
-}
+export const TODO_SRV = new Tag<TodoService>('service/todo');
 
-export const TODO_SRV = new Tag<ITodoService>('service/todo');
-
-export class TodoService implements ITodoService {
+export class TodoService {
   private todoRepository = Context.get(TODO_REPO);
 
   get(id: string): Promise<Todo> {
