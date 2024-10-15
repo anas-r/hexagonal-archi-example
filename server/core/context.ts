@@ -69,7 +69,7 @@ export class Context<P> {
     currentStore = context.instances;
     for (const [tag, getter] of context.ctors) {
       Context.log('Context.provide:', 'constructing', tag.name);
-      context.instances.set(tag, getter());
+      if (!context.instances.has(tag)) context.instances.set(tag, getter());
     }
 
     const instance = new ctor();
