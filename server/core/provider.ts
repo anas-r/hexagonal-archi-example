@@ -2,6 +2,9 @@ import { Constructor } from '@core/types';
 
 declare const tag: unique symbol;
 
+const VALUE = Symbol('VALUE');
+const FACTORY = Symbol('FACTORY');
+
 /**
  * @name Tag
  * @description A wrapper class for injectable dependencies.
@@ -16,7 +19,10 @@ export class Tag<T> {
  * @description Defines a specialized provider for constant values.
  */
 export class ValueProvider<T> {
-  constructor(public value: T) {}
+  private [VALUE]: T;
+  constructor(public value: T) {
+    this[VALUE] = value;
+  }
 }
 
 /**
@@ -24,7 +30,10 @@ export class ValueProvider<T> {
  * @description Defines a specialized provider for factory functions.
  */
 export class FactoryProvider<T> {
-  constructor(public factory: () => T) {}
+  private [FACTORY]: () => T;
+  constructor(public factory: () => T) {
+    this[FACTORY] = factory;
+  }
 }
 
 /**
@@ -35,16 +44,16 @@ export type Provider<T> = Constructor<T> | ValueProvider<T> | FactoryProvider<T>
 
 type ProvideFn = {
   <T, U extends T>(tag: Tag<T>, provider: Constructor<U>): [Tag<T>, () => U];
-  <T, U extends T>(tag: Tag<T>, provider: { value: T }): [Tag<T>, () => U];
-  <T, U extends T>(tag: Tag<T>, provider: { factory: () => T }): [Tag<T>, () => U];
+  <T, U extends T>(tag: Tag<T>, provider: ValueProvider<T>): [Tag<T>, () => U];
+  <T, U extends T>(tag: Tag<T>, provider: FactoryProvider<T>): [Tag<T>, () => U];
 };
 
 const isFactory = <T>(provider: Provider<T>): provider is FactoryProvider<T> => {
-  return !!(provider as any).factory;
+  return Reflect.has(provider, FACTORY);
 };
 
 const isValue = <T>(provider: Provider<T>): provider is ValueProvider<T> => {
-  return !!(provider as any).value;
+  return Reflect.has(provider, VALUE);
 };
 
 /**
@@ -52,7 +61,7 @@ const isValue = <T>(provider: Provider<T>): provider is ValueProvider<T> => {
  * @description Creates a strongly typed `[Tag, Provider]` 2-tuple.
  */
 export const provide: ProvideFn = (tag, provider) => {
-  if (isFactory(provider)) return [tag, provider.factory];
-  if (isValue(provider)) return [tag, () => provider.value];
+  if (isFactory(provider)) return [tag, Reflect.get(provider, FACTORY)];
+  if (isValue(provider)) return [tag, () => Reflect.get(provider, VALUE)];
   return [tag, () => new provider()];
 };

@@ -3,7 +3,8 @@ import { Context } from '@core/context';
 import { Tag } from '@core/provider';
 import { PROJECT_SRV } from '@server/services/project.service';
 import { TODO_SRV } from '@server/services/todo.service';
-import type { Application, Request, Response } from 'express';
+import { EXPRESS_APP } from '@server/adapters/express';
+import type { Request, Response } from 'express';
 import type { Project } from '@server/entities/project';
 import type { Todo } from '@server/entities/todo';
 
@@ -96,7 +97,8 @@ export class ProjectExpressAdapter {
   }
 }
 
-export const mount = (app: Application) => {
+export const mount = () => {
+  const app = Context.get(EXPRESS_APP);
   const adapter = Context.get(PROJECT_EXP_ADAPT);
   const router = express.Router();
 

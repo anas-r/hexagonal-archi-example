@@ -17,8 +17,8 @@ export class AppModule implements IRunnable, IStoppable {
 
   constructor() {
     this._app.use(bodyParser.json());
-    projectAdapter.mount(this._app);
-    todoAdapter.mount(this._app);
+    projectAdapter.mount();
+    todoAdapter.mount();
   }
 
   get app() {

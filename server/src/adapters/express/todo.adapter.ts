@@ -2,7 +2,8 @@ import express from 'express';
 import { Context } from '@core/context';
 import { Tag } from '@core/provider';
 import { TODO_SRV } from '@server/services/todo.service';
-import type { Application, Request, Response } from 'express';
+import { EXPRESS_APP } from '@server/adapters/express';
+import type { Request, Response } from 'express';
 import type { Todo } from '@server/entities/todo';
 
 export const TODO_EXP_ADAPT = new Tag<TodoExpressAdapter>('express/adapter/todo');
@@ -70,7 +71,8 @@ export class TodoExpressAdapter {
   }
 }
 
-export const mount = (app: Application) => {
+export const mount = () => {
+  const app = Context.get(EXPRESS_APP);
   const adapter = Context.get(TODO_EXP_ADAPT);
   const router = express.Router();
 
